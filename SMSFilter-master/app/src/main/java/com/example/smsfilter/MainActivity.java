@@ -2,14 +2,17 @@ package com.example.smsfilter;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import androidx.navigation.NavController;
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
@@ -64,7 +67,28 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        navView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
+                switch ( item.getItemId() ) {
+
+                    case R.id.navigation_dashboard :
+                        Intent a = new Intent(MainActivity.this,InserimentoNumero.class);
+                        startActivity(a);
+                        break;
+
+                    case R.id.navigation_notifications :
+
+                        Intent b = new Intent( MainActivity.this, CancellazioneNumero.class) ;
+                        startActivity(b);
+                        break ;
+
+                }
+
+                return false ;
+            }
+        });
     }
 
 }

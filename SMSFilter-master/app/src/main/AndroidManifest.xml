@@ -11,7 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SMSFilter">
-        <activity android:name=".DisplayMessage"></activity>
+        <activity android:name=".CancellazioneNumero"></activity>
+        <activity android:name=".InserimentoNumero" />
+        <activity android:name=".DisplayMessage" />
 
         <receiver
             android:name=".MyReceiver"

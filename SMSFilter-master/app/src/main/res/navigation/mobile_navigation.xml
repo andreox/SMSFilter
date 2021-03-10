@@ -15,11 +15,20 @@
         android:id="@+id/navigation_dashboard"
         android:name="com.example.smsfilter.ui.dashboard.DashboardFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_dashboard" >
+        <action
+            android:id="@+id/action_navigation_dashboard_to_inserimentoNumero"
+            app:destination="@id/inserimentoNumero" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_notifications"
         android:name="com.example.smsfilter.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
+    <activity
+        android:id="@+id/inserimentoNumero"
+        android:name="com.example.smsfilter.InserimentoNumero"
+        android:label="activity_inserimento_numero"
+        tools:layout="@layout/activity_inserimento_numero" />
 </navigation>

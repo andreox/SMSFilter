@@ -3,6 +3,7 @@ package com.example.smsfilter;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -53,7 +54,8 @@ public class DBHelper extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues() ;
         contentValues.put("Telefono", phone);
         contentValues.put("Nome", name);
-        db.insert("Persone", null, contentValues);
+        if ( (db.insert("Persone", null, contentValues)) == -1 ) throw new SQLiteConstraintException();
+
         return true;
 
     }
@@ -61,8 +63,9 @@ public class DBHelper extends SQLiteOpenHelper {
     public int deleteContact (String phone) {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete("Persone",
-                "id = ? ",
+                "Telefono = ? ",
                 new String[]{phone});
+
     }
 
     public Cursor getData(int id) {
@@ -79,7 +82,7 @@ public class DBHelper extends SQLiteOpenHelper {
         res.moveToFirst();
 
         while(res.isAfterLast() == false){
-            array_list.add(res.getString(res.getColumnIndex(CONTACTS_COLUMN_NAME)));
+            array_list.add(res.getString(res.getColumnIndex("Telefono")));
             res.moveToNext();
         }
         return array_list;
