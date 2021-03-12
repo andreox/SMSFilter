@@ -1,15 +1,24 @@
 package com.example.smsfilter;
 
+import android.Manifest;
+import android.content.BroadcastReceiver;
+import android.util.Log ;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
@@ -21,13 +30,18 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final int PERMISSIONS_REQUEST_RECEIVE_SMS = 0;
     private ListView lw_obj;
     DBHelper mydb;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        requestPermissions(Manifest.permission.RECEIVE_SMS, PERMISSIONS_REQUEST_RECEIVE_SMS);
+
+
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -89,6 +103,34 @@ public class MainActivity extends AppCompatActivity {
                 return false ;
             }
         });
+    }
+
+    private void requestPermissions(String permission, int requestCode) {
+        // Here, thisActivity is the current activity
+        if (ContextCompat.checkSelfPermission(this, permission)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) {
+
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+                Toast.makeText(this, "Granting permission is necessary!", Toast.LENGTH_LONG).show();
+
+            } else {
+
+                // No explanation needed, we can request the permission.
+
+                ActivityCompat.requestPermissions(this,
+                        new String[]{permission},
+                        requestCode);
+
+                // requestCode is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+        }
     }
 
 }

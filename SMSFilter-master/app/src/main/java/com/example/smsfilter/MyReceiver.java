@@ -7,47 +7,43 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
+import android.util.Log;
+import android.widget.Toast;
+
+import java.util.ArrayList;
 
 public class MyReceiver extends BroadcastReceiver {
 
-    private static final String TAG = MyReceiver.class.getSimpleName();
-    public static final String pdu_type = "pdus";
+    private static final String SMS_RECEIVED = "android.provider.Telephony.SMS_RECEIVED";
 
-    @TargetApi(Build.VERSION_CODES.M)
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        Bundle bundle = intent.getExtras() ;
-        SmsMessage[] messages ;
-        String strMessage = "" ;
-        String format = bundle.getString("format");
-        Object[] pdus = (Object[]) bundle.get(pdu_type);
+        if (intent.getAction().equals(SMS_RECEIVED)) {
 
-        if (pdus != null) {
-            // Check the Android version.
-            boolean isVersionM =
-                    (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M);
-            // Fill the msgs array.
-            messages = new SmsMessage[pdus.length];
-            for (int i = 0; i < messages.length; i++) {
-                // Check Android version and use appropriate createFromPdu.
-                if (isVersionM) {
-                    // If Android version M or newer:
-                    messages[i] = SmsMessage.createFromPdu((byte[]) pdus[i], format);
-                } else {
-                    // If Android version L or older:
-                    messages[i] = SmsMessage.createFromPdu((byte[]) pdus[i]);
+            Bundle bundle = intent.getExtras();
+            if (bundle != null) {
+                // get sms objects
+                Object[] pdus = (Object[]) bundle.get("pdus");
+                if (pdus.length == 0) {
+                    return;
                 }
 
-                /* if ( messages[i].getOriginatingAddress().equals( some_of_numbers_in_Persona_TABLE ) {
-
-
-                        Insert into Messaggio TABLE => Key Incrementale, Stringa NUM TEL, Stringa Body ( messages[i].getMessageBody() )
-                        Aggiungi questa istanza alla lista a scorrimento nell'Activity di SHOW SMS
-
-                 */
+                // large message might be broken into many
+                SmsMessage[] messages = new SmsMessage[pdus.length];
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < pdus.length; i++) {
+                    messages[i] = SmsMessage.createFromPdu((byte[]) pdus[i]);
+                    sb.append(messages[i].getMessageBody());
+                }
+                String sender = messages[0].getOriginatingAddress();
+                String message = sb.toString();
+                System.out.println(message);
+                //Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+                // prevent any other broadcast receivers from receiving broadcast
+                // abortBroadcast();
             }
         }
-
     }
+
 }
