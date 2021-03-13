@@ -2,6 +2,7 @@ package com.example.smsfilter;
 
 import android.Manifest;
 import android.content.BroadcastReceiver;
+import android.support.v7.app.AppCompatDelegate;
 import android.util.Log ;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -58,8 +59,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications)
                 .build();
@@ -125,29 +124,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void requestPermissions(String permission, int requestCode) {
-        // Here, thisActivity is the current activity
+
         if (ContextCompat.checkSelfPermission(this, permission)
                 != PackageManager.PERMISSION_GRANTED) {
 
-            // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) {
 
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
                 Toast.makeText(this, "Granting permission is necessary!", Toast.LENGTH_LONG).show();
 
             } else {
 
-                // No explanation needed, we can request the permission.
 
                 ActivityCompat.requestPermissions(this,
                         new String[]{permission},
                         requestCode);
 
-                // requestCode is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
             }
         }
     }

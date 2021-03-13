@@ -28,7 +28,7 @@ public class InserimentoNumero extends AppCompatActivity {
                 String ph_number = numero.getText().toString() ;
                 String cont_name = nome.getText().toString();
 
-                if ( ph_number != null ) { //Questo IF è da rivedere per il Testing ( Approfondibile )
+                if ( ph_number != null ) {
 
                     try {
                         db.insertContact(ph_number, cont_name);

@@ -26,13 +26,11 @@ public class MyReceiver extends BroadcastReceiver {
 
             Bundle bundle = intent.getExtras();
             if (bundle != null) {
-                // get sms objects
                 Object[] pdus = (Object[]) bundle.get("pdus");
                 if (pdus.length == 0) {
                     return;
                 }
 
-                // large message might be broken into many
                 SmsMessage[] messages = new SmsMessage[pdus.length];
                 StringBuilder sb = new StringBuilder();
                 for (int i = 0; i < pdus.length; i++) {
@@ -47,10 +45,6 @@ public class MyReceiver extends BroadcastReceiver {
                     instance.updateList(message,sender);
                 }
 
-                System.out.println(message);
-                //Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
-                // prevent any other broadcast receivers from receiving broadcast
-                // abortBroadcast();
             }
         }
     }

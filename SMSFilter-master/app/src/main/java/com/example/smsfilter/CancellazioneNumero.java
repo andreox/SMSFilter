@@ -27,7 +27,7 @@ public class CancellazioneNumero extends AppCompatActivity {
 
                 String ph_number = numero.getText().toString() ;
 
-                if ( ph_number != null ) { //Questo IF è da rivedere per il Testing ( Approfondibile )
+                if ( ph_number != null ) {
 
                     int value = db.deleteContact(ph_number);
                     if ( value != 0 ) {
