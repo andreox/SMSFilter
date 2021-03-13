@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 public class CancellazioneNumero extends AppCompatActivity {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,16 +30,16 @@ public class CancellazioneNumero extends AppCompatActivity {
                 if ( ph_number != null ) { //Questo IF è da rivedere per il Testing ( Approfondibile )
 
                     int value = db.deleteContact(ph_number);
+                    if ( value != 0 ) {
 
-                    if ( value == 0 ) {
+                            Toast.makeText(getApplicationContext(), "CONTATTO ELIMINATO", Toast.LENGTH_SHORT).show();
+                    }
+
+                    else {
 
                         Toast.makeText(getApplicationContext(), "CONTATTO INESISTENTE", Toast.LENGTH_SHORT).show();
                     }
-                    /*catch( SQLiteConstraintException e ) {
 
-                        Toast.makeText(getApplicationContext(), "CONTATTO GIA' INSERITO", Toast.LENGTH_SHORT).show();
-
-                    }*/
                 }
 
                 System.out.println( db.getAllContacts() ) ;

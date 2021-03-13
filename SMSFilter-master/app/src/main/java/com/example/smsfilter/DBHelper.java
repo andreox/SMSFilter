@@ -68,6 +68,13 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
+    public int deleteMessages ( String phone ) {
+        SQLiteDatabase db = this.getWritableDatabase() ;
+        return db.delete( "Messaggi" ,
+                "Telefono = ? ",
+                new String[]{phone}) ;
+
+    }
     public Cursor getData(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res =  db.rawQuery( "select * from Messaggi where Mess_ID="+id+"", null );

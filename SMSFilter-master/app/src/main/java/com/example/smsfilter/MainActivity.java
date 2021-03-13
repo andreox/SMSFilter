@@ -30,10 +30,25 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static MainActivity instance ;
     private static final int PERMISSIONS_REQUEST_RECEIVE_SMS = 0;
     private ListView lw_obj;
+    private ArrayAdapter adapt ;
+    private ArrayList msgs_list ;
     DBHelper mydb;
 
+
+    public static MainActivity getInstance() {
+
+        return instance ;
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        instance = this;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,22 +69,18 @@ public class MainActivity extends AppCompatActivity {
 
         mydb = new DBHelper(this) ;
 
-        mydb.insertContact("3922858891", "Alessio") ;
-        mydb.insertContact("3356541039", "Eugenia") ;
-        mydb.insertContact("3453586382", "Vincenzo") ;
-        mydb.insertMessage("3453586382", "Belllaaaaaaaaa") ;
-        mydb.insertMessage("3922858891", "AOOOOOOOOOOOOOOOOO") ;
-
-        ArrayList msgs_list = mydb.getAllMessages() ;
-        ArrayAdapter adapt = new ArrayAdapter(this, android.R.layout.simple_list_item_1, msgs_list) ;
+        System.out.println(mydb.getAllMessages()) ;
+        System.out.println(mydb.getAllContacts()) ;
+        msgs_list = mydb.getAllMessages() ;
+        adapt = new ArrayAdapter(this, android.R.layout.simple_list_item_1, msgs_list) ;
         lw_obj = (ListView) findViewById(R.id.listView1) ;
         lw_obj.setAdapter(adapt);
 
         lw_obj.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
                 // TODO Auto-generated method stub
-                int id_To_Search = arg2 + 1;
+                int id_To_Search = position + 1 ;
 
                 Bundle dataBundle = new Bundle();
                 dataBundle.putInt("Mess_ID", id_To_Search);
@@ -103,6 +114,14 @@ public class MainActivity extends AppCompatActivity {
                 return false ;
             }
         });
+    }
+
+    public void updateList(final String smsMessage, final String smsSource ) {
+
+        mydb.insertMessage(smsSource,smsMessage);
+        msgs_list.add(smsMessage) ;
+        adapt.notifyDataSetChanged();
+
     }
 
     private void requestPermissions(String permission, int requestCode) {
