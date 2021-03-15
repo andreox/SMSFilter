@@ -11,10 +11,12 @@ import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -25,26 +27,40 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 public class InserimentoNumero extends AppCompatActivity {
 
     private Spinner contact_list ;
+    private ArrayList<String> nomi ;
+    private ArrayList<String> numeri ;
+    private ArrayAdapter<String> dataAdapter ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inserimento_numero);
         DBHelper db = new DBHelper(this) ;
+        contact_list = (Spinner) findViewById(R.id.spinner) ;
+        nomi = new ArrayList<String>() ;
+        numeri = new ArrayList<String>() ;
+        dataAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, nomi);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        contact_list.setAdapter(dataAdapter);
 
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_CONTACTS, Manifest.permission.READ_CONTACTS}, PackageManager.PERMISSION_GRANTED);
-       /* BottomNavigationView navView = findViewById(R.id.nav_view);
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications)
-                .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-        NavigationUI.setupWithNavController(navView, navController);*/
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS}, 100);
+
+        }
+
+        else {
+
+            loadContacts();
+        }
 
         EditText numero = (EditText) findViewById(R.id.editTextPhone) ;
         EditText nome = (EditText) findViewById(R.id.editTextTextPersonName) ;
@@ -55,22 +71,20 @@ public class InserimentoNumero extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String ph_number = numero.getText().toString() ;
-                String cont_name = nome.getText().toString();
+                //String ph_number = numero.getText().toString() ;
+                //String cont_name = nome.getText().toString();
+                String cont_name = (String) contact_list.getSelectedItem();
+                int index = nomi.indexOf(cont_name) ;
+                String ph_number = numeri.get(index) ;
 
                 try {
 
-                    Cursor cursor = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                            new String[]{ContactsContract.CommonDataKinds.Phone.NUMBER, ContactsContract.CommonDataKinds.Phone.TYPE},
-                            "DISPLAY_NAME = '" + cont_name + "'", null, null);
-
-                    cursor.moveToFirst();
-                    numero.setText(cursor.getString(0));
+                    nome.setText(cont_name);
+                    numero.setText(ph_number);
 
                     try {
-                        if (db.insertContact(cursor.getString(0), cont_name)) {
+                        if (db.insertContact(ph_number, cont_name)) {
 
-                            numero.setText((CharSequence) cursor.getString(0));
                             Toast.makeText(getApplicationContext(), "CONTATTO INSERITO", Toast.LENGTH_SHORT).show();
 
                         }
@@ -90,6 +104,47 @@ public class InserimentoNumero extends AppCompatActivity {
                 System.out.println( db.getAllContacts() ) ;
             }
         });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        loadContacts();
+    }
+
+    private void loadContacts() {
+
+        ContentResolver contentResolver=getContentResolver();
+        Cursor cursor=contentResolver.query(ContactsContract.Contacts.CONTENT_URI,null,null,null,null);
+
+        if (cursor.moveToFirst()){
+            do {
+
+                String id = cursor.getString( cursor.getColumnIndex(ContactsContract.Contacts._ID)) ;
+                String name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)) ;
+                System.out.println(name) ;
+                nomi.add(name);
+                int hasPhoneNumber = Integer.parseInt(cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) ;
+
+                if ( hasPhoneNumber > 0 ) {
+
+                    Cursor cursor2 = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                            null,
+                            ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ? ",
+                            new String[]{id}, null) ;
+
+                    while ( cursor2.moveToNext()) {
+                        String phoneNumber = cursor2.getString(cursor2.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)) ;
+                        numeri.add(phoneNumber) ;
+                    }
+                    cursor2.close() ;
+                }
+
+            } while( cursor.moveToNext()) ;
+        }
+        cursor.close() ;
+        dataAdapter.notifyDataSetChanged();
+
     }
 
 }

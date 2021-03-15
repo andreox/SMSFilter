@@ -1,15 +1,24 @@
 package com.example.smsfilter;
 
+import android.Manifest;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteConstraintException;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.navigation.NavController;
@@ -17,22 +26,38 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import java.util.ArrayList;
+
 public class CancellazioneNumero extends AppCompatActivity {
+
+    private Spinner spinner2 ;
+    private ArrayList<String> nomi ;
+    private ArrayList<String> numeri ;
+    private ArrayAdapter<String> dataAdapter ;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cancellazione_numero);
+        spinner2 = (Spinner) findViewById(R.id.spinner2) ;
+        nomi = new ArrayList<String>() ;
+        numeri = new ArrayList<String>() ;
+        dataAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, nomi);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner2.setAdapter(dataAdapter);
 
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
 
-        /*BottomNavigationView navView = findViewById(R.id.nav_view);
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications)
-                .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-        NavigationUI.setupWithNavController(navView, navController);*/
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS}, 100);
+
+        }
+
+        else {
+
+            loadContacts();
+        }
 
         DBHelper db = new DBHelper(this ) ;
 
@@ -43,7 +68,10 @@ public class CancellazioneNumero extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String ph_number = numero.getText().toString() ;
+                String sel_name = (String) spinner2.getSelectedItem();
+                int index = nomi.indexOf(sel_name) ;
+                String ph_number = numeri.get(index) ;
+                numero.setText(ph_number);
 
                 if ( ph_number != null ) {
 
@@ -64,27 +92,46 @@ public class CancellazioneNumero extends AppCompatActivity {
             }
         });
 
-        /*navView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+    }
 
-                switch ( item.getItemId() ) {
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        loadContacts();
+    }
 
-                    case R.id.navigation_home :
-                        Intent a = new Intent(CancellazioneNumero.this,MainActivity.class);
-                        startActivity(a);
-                        break;
+    private void loadContacts() {
 
-                    case R.id.navigation_dashboard :
+        ContentResolver contentResolver=getContentResolver();
+        Cursor cursor=contentResolver.query(ContactsContract.Contacts.CONTENT_URI,null,null,null,null);
 
-                        Intent b = new Intent( CancellazioneNumero.this, InserimentoNumero.class) ;
-                        startActivity(b);
-                        break ;
+        if (cursor.moveToFirst()){
+            do {
 
+                String id = cursor.getString( cursor.getColumnIndex(ContactsContract.Contacts._ID)) ;
+                String name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)) ;
+                System.out.println(name) ;
+                nomi.add(name);
+                int hasPhoneNumber = Integer.parseInt(cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) ;
+
+                if ( hasPhoneNumber > 0 ) {
+
+                    Cursor cursor2 = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                            null,
+                            ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ? ",
+                            new String[]{id}, null) ;
+
+                    while ( cursor2.moveToNext()) {
+                        String phoneNumber = cursor2.getString(cursor2.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)) ;
+                        numeri.add(phoneNumber) ;
+                    }
+                    cursor2.close() ;
                 }
 
-                return false ;
-            }
-        });*/
+            } while( cursor.moveToNext()) ;
+        }
+        cursor.close() ;
+        dataAdapter.notifyDataSetChanged();
+
     }
 }
