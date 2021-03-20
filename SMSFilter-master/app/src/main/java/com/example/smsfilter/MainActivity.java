@@ -1,19 +1,16 @@
 package com.example.smsfilter;
 
 import android.Manifest;
-import android.content.BroadcastReceiver;
-import android.support.v7.app.AppCompatDelegate;
-import android.util.Log ;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.net.ConnectivityManager;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -22,20 +19,23 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.navigation.NavController;
-import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
     private static MainActivity instance ;
     private static final int PERMISSIONS_REQUEST_RECEIVE_SMS = 0;
     private ListView lw_obj;
+    private Integer num_msgs_received = 0 ;
     private ArrayAdapter adapt ;
+    private String email ;
     private ArrayList msgs_list ;
+    private FirebaseFirestore cloud_db ;
     DBHelper mydb;
 
 
@@ -57,6 +57,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         requestPermissions(Manifest.permission.RECEIVE_SMS, PERMISSIONS_REQUEST_RECEIVE_SMS);
 
+        Bundle bundle_email = getIntent().getExtras() ;
+        if ( bundle_email != null )
+            email = bundle_email.getString("user_email") ;
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
@@ -66,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
 
+        cloud_db = FirebaseFirestore.getInstance();
         mydb = new DBHelper(this) ;
 
         System.out.println(mydb.getAllMessages()) ;
@@ -118,6 +122,12 @@ public class MainActivity extends AppCompatActivity {
     public void updateList(final String smsMessage, final String smsSource ) {
 
         mydb.insertMessage(smsSource,smsMessage);
+        HashMap<String,Object> msg = new HashMap<>() ;
+        msg.put("Telefono",smsSource) ;
+        msg.put("Corpo",smsMessage) ;
+        num_msgs_received++ ;
+        cloud_db.collection("Utenti").document(email).collection("Messaggi").document("Messaggio "+num_msgs_received.toString()).set(msg) ;
+
         msgs_list.add(smsMessage) ;
         adapt.notifyDataSetChanged();
 
