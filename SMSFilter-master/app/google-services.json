@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "244665951308",
+    "project_id": "smsfilter-d507a",
+    "storage_bucket": "smsfilter-d507a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:244665951308:android:15b71f3dc0e890a1c2c0e9",
+        "android_client_info": {
+          "package_name": "com.example.smsfilter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "244665951308-gd6lb4h74kci07gaaluoj20kq7c2mtab.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxoRE_g97BnCAOO6an_jIunoYTsXdH1RY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "244665951308-gd6lb4h74kci07gaaluoj20kq7c2mtab.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
