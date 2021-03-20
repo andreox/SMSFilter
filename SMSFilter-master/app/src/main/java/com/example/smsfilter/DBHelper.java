@@ -103,4 +103,18 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         return array_list;
     }
+
+    public boolean checkIfEmpty() {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor mCursor = db.rawQuery("SELECT * FROM Persone", null);
+        Cursor mCursor2 = db.rawQuery("SELECT * FROM Messaggi",null);
+
+        if (!mCursor.moveToFirst() && !mCursor2.moveToFirst()) {
+            System.out.println("DB VUOTO!") ;
+            return true;
+        }
+
+        return false ;
+    }
 }

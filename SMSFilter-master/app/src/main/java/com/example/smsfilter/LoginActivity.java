@@ -18,11 +18,13 @@ import com.google.firebase.auth.FirebaseAuth;
 public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth ;
+    private DBHelper db ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        db = new DBHelper(this) ;
         mAuth = FirebaseAuth.getInstance() ;
         EditText email = (EditText) findViewById(R.id.editTextTextEmailAddress) ;
         EditText pswd = (EditText) findViewById(R.id.editTextTextPassword) ;
@@ -52,10 +54,17 @@ public class LoginActivity extends AppCompatActivity {
 
                             Bundle bundle = new Bundle() ;
                             bundle.putString("user_email",str_email);
-                            Intent intent = new Intent( getApplicationContext(), MainActivity.class) ;
+                            if ( db.checkIfEmpty()) {
+                                Intent intent_empty = new Intent( getApplicationContext(), LoadDBActivity.class) ;
+                                intent_empty.putExtras(bundle) ;
+                                startActivity(intent_empty) ;
+                            }
+                            else {
+                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 
-                            intent.putExtras(bundle) ;
-                            startActivity(intent);
+                                intent.putExtras(bundle);
+                                startActivity(intent);
+                            }
 
                         }
                     }

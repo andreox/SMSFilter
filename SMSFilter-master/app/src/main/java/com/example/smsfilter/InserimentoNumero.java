@@ -18,11 +18,16 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class InserimentoNumero extends AppCompatActivity {
 
     private Spinner contact_list ;
+    private String email = "" ;
+    private FirebaseFirestore cloud_db ;
     private ArrayList<String> nomi ;
     private ArrayList<String> numeri ;
     private ArrayAdapter<String> dataAdapter ;
@@ -31,7 +36,19 @@ public class InserimentoNumero extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inserimento_numero);
+
+
+        cloud_db = FirebaseFirestore.getInstance() ;
+        Bundle email_bundle = getIntent().getExtras() ;
+
+        if ( email_bundle != null ) {
+
+            email = email_bundle.getString("user_email") ;
+        }
         DBHelper db = new DBHelper(this) ;
+        System.out.println(db.getAllContacts()) ;
+        System.out.println(db.getAllMessages()) ;
+
         contact_list = (Spinner) findViewById(R.id.spinner) ;
         nomi = new ArrayList<String>() ;
         numeri = new ArrayList<String>() ;
@@ -74,7 +91,13 @@ public class InserimentoNumero extends AppCompatActivity {
                     try {
                         if (db.insertContact(ph_number, cont_name)) {
 
+                            HashMap<String,Object> contatto = new HashMap<>() ;
+                            contatto.put("Numero",ph_number) ;
+
+                            cloud_db.collection("Utenti").document(email).collection("Contatti").document(cont_name).set(contatto) ;
+
                             Toast.makeText(getApplicationContext(), "CONTATTO INSERITO", Toast.LENGTH_SHORT).show();
+
 
                         }
                     } catch (SQLiteConstraintException e) {

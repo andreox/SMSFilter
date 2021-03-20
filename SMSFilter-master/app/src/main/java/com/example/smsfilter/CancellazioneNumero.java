@@ -17,11 +17,17 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
 
 public class CancellazioneNumero extends AppCompatActivity {
 
+    private FirebaseFirestore cloud_db ;
     private Spinner spinner2 ;
+    private String email ;
     private ArrayList<String> nomi ;
     private ArrayList<String> numeri ;
     private ArrayAdapter<String> dataAdapter ;
@@ -31,6 +37,12 @@ public class CancellazioneNumero extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cancellazione_numero);
+
+        Bundle bundle_email = getIntent().getExtras() ;
+        if ( bundle_email != null )
+            email = bundle_email.getString("user_email") ;
+
+        cloud_db = FirebaseFirestore.getInstance() ;
         spinner2 = (Spinner) findViewById(R.id.spinner2) ;
         nomi = new ArrayList<String>() ;
         numeri = new ArrayList<String>() ;
@@ -69,7 +81,21 @@ public class CancellazioneNumero extends AppCompatActivity {
                     int value = db.deleteContact(ph_number);
                     if ( value != 0 ) {
 
-                            Toast.makeText(getApplicationContext(), "CONTATTO ELIMINATO", Toast.LENGTH_SHORT).show();
+                        cloud_db.collection("Utenti").document(email).collection("Contatti").document(sel_name)
+                                .delete()
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        System.out.println("Contatto eliminato correttamente") ;
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        System.out.println("Error deleting document: " + e);
+                                    }
+                                });
+                        Toast.makeText(getApplicationContext(), "CONTATTO ELIMINATO", Toast.LENGTH_SHORT).show();
                     }
 
                     else {

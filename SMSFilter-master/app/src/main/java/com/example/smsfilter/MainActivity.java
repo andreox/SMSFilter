@@ -5,8 +5,13 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -23,7 +28,9 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
@@ -34,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private Integer num_msgs_received = 0 ;
     private ArrayAdapter adapt ;
     private String email ;
-    private ArrayList msgs_list ;
+    private ArrayList<String> msgs_list ;
     private FirebaseFirestore cloud_db ;
     DBHelper mydb;
 
@@ -69,15 +76,14 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
 
-        cloud_db = FirebaseFirestore.getInstance();
         mydb = new DBHelper(this) ;
-
-        System.out.println(mydb.getAllMessages()) ;
-        System.out.println(mydb.getAllContacts()) ;
-        msgs_list = mydb.getAllMessages() ;
+        if ( mydb.getAllMessages() != null )
+            msgs_list = mydb.getAllMessages() ;
         adapt = new ArrayAdapter(this, android.R.layout.simple_list_item_1, msgs_list) ;
         lw_obj = (ListView) findViewById(R.id.listView1) ;
         lw_obj.setAdapter(adapt);
+
+        cloud_db = FirebaseFirestore.getInstance();
 
         lw_obj.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
@@ -99,16 +105,24 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
+                Bundle bundle = new Bundle() ;
+                bundle.putString("user_email",email);
+
                 switch ( item.getItemId() ) {
 
+
                     case R.id.navigation_dashboard :
-                        Intent a = new Intent(MainActivity.this,InserimentoNumero.class);
-                        startActivity(a);
+                        Intent intent = new Intent( getApplicationContext(), InserimentoNumero.class) ;
+
+                        intent.putExtras(bundle) ;
+                        startActivity(intent);
                         break;
 
                     case R.id.navigation_notifications :
 
+
                         Intent b = new Intent( MainActivity.this, CancellazioneNumero.class) ;
+                        b.putExtras(bundle) ;
                         startActivity(b);
                         break ;
 
@@ -125,8 +139,8 @@ public class MainActivity extends AppCompatActivity {
         HashMap<String,Object> msg = new HashMap<>() ;
         msg.put("Telefono",smsSource) ;
         msg.put("Corpo",smsMessage) ;
-        num_msgs_received++ ;
-        cloud_db.collection("Utenti").document(email).collection("Messaggi").document("Messaggio "+num_msgs_received.toString()).set(msg) ;
+        String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+        cloud_db.collection("Utenti").document(email).collection("Messaggi").document("Messaggio "+timeStamp).set(msg) ;
 
         msgs_list.add(smsMessage) ;
         adapt.notifyDataSetChanged();
