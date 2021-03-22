@@ -53,18 +53,21 @@ public class RegisterActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
 
-                            if ( task.isSuccessful()) {
+                            if (task.isSuccessful() && checkName(str_name) && checkPassword(str_pwd)) {
 
-                                User user = new User( str_name, str_email, str_pwd) ;
-                                FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user) ;
-                                addUserToCloudDB(str_email,str_name);
-                                Toast.makeText(RegisterActivity.this,"Registrazione effettuata",Toast.LENGTH_SHORT) ;
-                                Intent intent = new Intent(getApplicationContext(),LoginActivity.class) ;
-                                startActivity(intent) ;
+                                User user = new User(str_name, str_email, str_pwd);
+                                FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user);
+                                addUserToCloudDB(str_email, str_name);
+                                Toast.makeText(RegisterActivity.this, "Registrazione effettuata", Toast.LENGTH_SHORT);
+                                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                                startActivity(intent);
 
 
-                                }
+                            } else {
+                                Toast.makeText(getApplicationContext(), "IL NOME NON DEVE CONTENERE NUMERI E LA PASSWORD DEVE AVERE ALMENO 6 CARATTERI", Toast.LENGTH_SHORT).show();
+
                             }
+                        }
                     }
                 );
             }
@@ -91,5 +94,25 @@ public class RegisterActivity extends AppCompatActivity {
                     }
                 });
 
+    }
+
+    boolean checkName( String nome ) {
+
+        if ( nome.matches(".*\\d.*") ) {
+            return false ;
+        }
+
+        return true ;
+    }
+
+    boolean checkPassword( String pwd ) {
+
+        if ( pwd.length() < 6 ) {
+
+            return false ;
+
+        }
+
+        return true ;
     }
 }
