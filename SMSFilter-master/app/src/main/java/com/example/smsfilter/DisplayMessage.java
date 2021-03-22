@@ -16,8 +16,8 @@ public class DisplayMessage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_message);
 
-        number = (TextView) findViewById(R.id.textView2) ;
-        body = (TextView) findViewById(R.id.textView3) ;
+        number = (TextView) findViewById(R.id.textView3) ;
+        body = (TextView) findViewById(R.id.textView2) ;
 
         mydb = new DBHelper(this) ;
         Bundle extras = getIntent().getExtras();

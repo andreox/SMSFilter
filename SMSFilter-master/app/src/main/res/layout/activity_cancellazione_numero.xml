@@ -12,7 +12,9 @@
         android:layout_height="66dp"
         android:layout_marginStart="92dp"
         android:layout_marginTop="68dp"
+        android:fontFamily="monospace"
         android:text="Inserisci numero da cancellare :"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -33,6 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="156dp"
         android:layout_marginTop="60dp"
+        android:backgroundTint="@color/teal_200"
         android:text="Cancella"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName2" />
@@ -41,6 +44,7 @@
         android:id="@+id/spinner2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@android:drawable/spinner_dropdown_background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button2"
         app:layout_constraintVertical_bias="0.353"

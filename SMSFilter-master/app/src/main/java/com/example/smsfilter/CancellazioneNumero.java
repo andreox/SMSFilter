@@ -95,6 +95,7 @@ public class CancellazioneNumero extends AppCompatActivity {
                                         System.out.println("Error deleting document: " + e);
                                     }
                                 });
+
                         Toast.makeText(getApplicationContext(), "CONTATTO ELIMINATO", Toast.LENGTH_SHORT).show();
                     }
 
