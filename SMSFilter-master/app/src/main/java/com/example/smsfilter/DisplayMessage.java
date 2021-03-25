@@ -1,9 +1,10 @@
 package com.example.smsfilter;
 
 import android.database.Cursor;
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class DisplayMessage extends AppCompatActivity {
 
@@ -28,9 +29,13 @@ public class DisplayMessage extends AppCompatActivity {
 
                 Cursor rs = mydb.getData(Value);
                 id_To_Update = Value;
-                rs.moveToFirst();
-                String telefono = rs.getString(rs.getColumnIndex("Telefono")) ;
-                String corpo = rs.getString(rs.getColumnIndex("Body")) ;
+                String telefono = "" ;
+                String corpo = "";
+                if ( rs != null ) {
+                    rs.moveToFirst();
+                    telefono = rs.getString(rs.getColumnIndex("Telefono"));
+                    corpo = rs.getString(rs.getColumnIndex("Body"));
+                }
 
                 if (!rs.isClosed())  {
                     rs.close();

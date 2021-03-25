@@ -4,18 +4,6 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -23,10 +11,17 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -39,9 +34,11 @@ public class MainActivity extends AppCompatActivity {
     private static final int PERMISSIONS_REQUEST_RECEIVE_SMS = 0;
     private ListView lw_obj;
     private Integer num_msgs_received = 0 ;
-    private ArrayAdapter adapt ;
+    public ArrayAdapter adapt ;
     private String email ;
-    private ArrayList<String> msgs_list ;
+
+
+    public ArrayList<String> msgs_list ;
     private FirebaseFirestore cloud_db ;
     DBHelper mydb;
 
@@ -167,4 +164,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public ArrayList<String> getMsgs_list() {
+        mydb.getAllMessages() ; //Stesso metodo utilizzato per aggiornare lista messaggi, metodo get inserito solo a scopo di testing
+        return msgs_list;
+    }
 }
