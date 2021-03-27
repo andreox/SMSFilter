@@ -1,6 +1,7 @@
 package com.example.smsfilter;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -73,7 +74,8 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
 
-        mydb = new DBHelper(this) ;
+        //mydb = new DBHelper(this) ;
+        mydb = makeDBHelper(this) ;
         if ( mydb.getAllMessages() != null )
             msgs_list = mydb.getAllMessages() ;
         adapt = new ArrayAdapter(this, android.R.layout.simple_list_item_1, msgs_list) ;
@@ -130,6 +132,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public DBHelper makeDBHelper(Context context) {
+        return new DBHelper(context) ;
+    }
+
     public void updateList(final String smsMessage, final String smsSource ) {
 
         mydb.insertMessage(smsSource,smsMessage);
@@ -165,7 +171,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public ArrayList<String> getMsgs_list() {
-        mydb.getAllMessages() ; //Stesso metodo utilizzato per aggiornare lista messaggi, metodo get inserito solo a scopo di testing
+         //Stesso metodo utilizzato per aggiornare lista messaggi, metodo get inserito solo a scopo di testing
+        DBHelper db = makeDBHelper(this) ;
+        msgs_list = db.getAllMessages() ;
         return msgs_list;
+
     }
+
+    public DBHelper getdb() { return mydb ; }
 }

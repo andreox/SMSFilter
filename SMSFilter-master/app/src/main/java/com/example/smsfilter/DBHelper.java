@@ -117,4 +117,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return false ;
     }
+
+    DBHelper makeDBHelper( Context context ) {
+        return new DBHelper(context) ;
+    }
 }

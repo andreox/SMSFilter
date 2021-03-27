@@ -61,13 +61,11 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel:2.0.0'
     implementation 'com.google.firebase:firebase-auth:19.2.0'
     implementation 'androidx.annotation:annotation:1.0.0'
-    implementation files('libs\\easymock-4.2.jar')
-    implementation files('libs\\easymock-4.2-javadoc.jar')
-    implementation files('libs\\easymock-4.2-samples.jar')
-    implementation files('libs\\easymock-4.2-sources.jar')
-    implementation files('libs\\easymock-4.2-tests.jar')
+
 
     testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'org.mockito:mockito-android:2.+'
+    androidTestImplementation 'junit:junit:4.+'
 
     // Import the BoM for the Firebase platform
     implementation platform('com.google.firebase:firebase-bom:26.7.0')
@@ -100,7 +98,8 @@ dependencies {
     // dependency to appear on your APK's compile classpath or the test APK
     // classpath.
     androidTestImplementation 'androidx.test.espresso:espresso-idling-resource:3.1.0'
-    androidTestImplementation 'org.easymock:easymock:4.2'
+
+
 
 
 }
