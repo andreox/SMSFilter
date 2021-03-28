@@ -2,21 +2,23 @@ package com.example.smsfilter;
 
 import android.Manifest;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteConstraintException;
-import android.provider.ContactsContract;
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -25,12 +27,24 @@ import java.util.HashMap;
 
 public class InserimentoNumero extends AppCompatActivity {
 
+    private static InserimentoNumero instance ;
+    private DBHelper db ;
     private Spinner contact_list ;
     private String email = "" ;
     private FirebaseFirestore cloud_db ;
     private ArrayList<String> nomi ;
     private ArrayList<String> numeri ;
     private ArrayAdapter<String> dataAdapter ;
+
+
+    public static InserimentoNumero getInstance() { return instance ; }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        instance = this;
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +59,7 @@ public class InserimentoNumero extends AppCompatActivity {
 
             email = email_bundle.getString("user_email") ;
         }
-        DBHelper db = new DBHelper(this) ;
+        db = makeDBHelper(this) ;
         System.out.println(db.getAllContacts()) ;
         System.out.println(db.getAllMessages()) ;
 
@@ -89,17 +103,8 @@ public class InserimentoNumero extends AppCompatActivity {
                     numero.setText(ph_number);
 
                     try {
-                        if (db.insertContact(ph_number, cont_name)) {
+                        insertContactInCloud(ph_number, cont_name) ;
 
-                            HashMap<String,Object> contatto = new HashMap<>() ;
-                            contatto.put("Numero",ph_number) ;
-
-                            cloud_db.collection("Utenti").document(email).collection("Contatti").document(cont_name).set(contatto) ;
-
-                            Toast.makeText(getApplicationContext(), "CONTATTO INSERITO", Toast.LENGTH_SHORT).show();
-
-
-                        }
                     } catch (SQLiteConstraintException e) {
 
                         Toast.makeText(getApplicationContext(), "CONTATTO GIA' INSERITO", Toast.LENGTH_SHORT).show();
@@ -157,6 +162,30 @@ public class InserimentoNumero extends AppCompatActivity {
         cursor.close() ;
         dataAdapter.notifyDataSetChanged();
 
+    }
+
+    public DBHelper makeDBHelper(Context context) {
+        return new DBHelper(context) ;
+    }
+
+    public boolean insertContactInCloud(String ph_number, String cont_name) {
+
+        DBHelper db = makeDBHelper(this) ;
+            if (db.insertContact(ph_number, cont_name)) {
+
+
+                HashMap<String, Object> contatto = new HashMap<>();
+                contatto.put("Numero", ph_number);
+
+                cloud_db.collection("Utenti").document(email).collection("Contatti").document(cont_name).set(contatto);
+
+                Toast.makeText(getApplicationContext(), "CONTATTO INSERITO", Toast.LENGTH_SHORT).show();
+
+                return true;
+
+            }
+
+        return false ;
     }
 
 }

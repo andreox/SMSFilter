@@ -24,16 +24,14 @@ public class MockDBTest {
     @Mock
     private DBHelper db ;
 
-
-
-    @Rule
+   @Rule
     public ActivityScenarioRule<MainActivity> activityRule
             = new ActivityScenarioRule<>(MainActivity.class);
 
 
     @Test
     public void mainActivityShowMsgsList() {
-        // Given a mocked Context injected into the object under test...
+
         MainActivity ma = spy(MainActivity.getInstance()) ;
         doReturn(db).when(ma).makeDBHelper(any(Context.class)) ;
         ArrayList<String> messaggi = new ArrayList<>() ;

@@ -40,6 +40,8 @@ android {
         exclude 'META-INF/thirdpartylicenses/ASM'
         exclude("META-INF/*.kotlin_module")
     }
+    useLibrary 'android.test.mock'
+
 
 }
 
@@ -76,6 +78,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore'
 
     androidTestImplementation 'androidx.test:core:1.0.0'
+
 
     // AndroidJUnitRunner and JUnit Rules
     androidTestImplementation 'androidx.test:runner:1.1.0'
