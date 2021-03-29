@@ -6,7 +6,7 @@ import static org.junit.Assert.*;
 
 //Test di Unità dei Metodi Terminali dell'app.
 
-public class ExampleUnitTest {
+public class UnitTestTerminalModules {
     @Test
     public void UsersGetCorrect() {
 

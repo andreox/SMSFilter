@@ -1,14 +1,14 @@
 package com.example.smsfilter;
 
+import android.content.Context;
 import android.content.Intent;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -17,14 +17,25 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity {
 
+    private static LoginActivity instance ;
     private FirebaseAuth mAuth ;
     private DBHelper db ;
+    private String str_email = "";
+    private String str_pswd = "";
+
+    public static LoginActivity getInstance() { return instance ;}
+
+    @Override
+    public void onStart() {
+        super.onStart(); ;
+        instance = this ;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        db = new DBHelper(this) ;
+        db = makeDBHelper(this) ;
         mAuth = FirebaseAuth.getInstance() ;
         EditText email = (EditText) findViewById(R.id.editTextTextEmailAddress) ;
         EditText pswd = (EditText) findViewById(R.id.editTextTextPassword) ;
@@ -44,8 +55,11 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String str_email = email.getText().toString().trim();
-                String str_pswd = pswd.getText().toString().trim() ;
+                str_email = email.getText().toString().trim();
+                str_pswd = pswd.getText().toString().trim() ;
+                Bundle bundle = new Bundle() ;
+                bundle.putString("user_email",str_email);
+
                 mAuth.signInWithEmailAndPassword(str_email, str_pswd).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -72,4 +86,8 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
+    public String getStr_email() { return str_email ;}
+    public String getStr_pswd() { return  str_pswd ;}
+    public DBHelper makeDBHelper(Context context) { return new DBHelper(context) ;}
 }

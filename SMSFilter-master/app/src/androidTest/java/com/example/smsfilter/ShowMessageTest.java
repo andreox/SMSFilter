@@ -22,6 +22,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anything;
 
+
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class ShowMessageTest {
@@ -46,15 +47,16 @@ public class ShowMessageTest {
     public void verifyIdDisplayMessage() {
         //onView(withId(R.id.listView1)).perform(click()) ;
 
+        int position = 1 ;
         MainActivity ma = MainActivity.getInstance() ;
         ma.msgs_list.add("Messaggio") ;
         ma.adapt.notifyDataSetChanged();
-        onData(anything()).inAdapterView(withId(R.id.listView1)).atPosition(0).perform(click());
+        onData(anything()).inAdapterView(withId(R.id.listView1)).atPosition(position).perform(click());
 
         intended(allOf(
                 hasComponent(hasShortClassName(".DisplayMessage")),
                 toPackage("com.example.smsfilter"),
-                hasExtra(ID, 1)));
+                hasExtra(ID, position+1)));
 
     }
 

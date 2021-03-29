@@ -170,6 +170,7 @@ public class InserimentoNumero extends AppCompatActivity {
 
     public boolean insertContactInCloud(String ph_number, String cont_name) {
 
+        FirebaseFirestore cloud_db = getinst() ;
         DBHelper db = makeDBHelper(this) ;
             if (db.insertContact(ph_number, cont_name)) {
 
@@ -177,9 +178,13 @@ public class InserimentoNumero extends AppCompatActivity {
                 HashMap<String, Object> contatto = new HashMap<>();
                 contatto.put("Numero", ph_number);
 
-                cloud_db.collection("Utenti").document(email).collection("Contatti").document(cont_name).set(contatto);
+                //try
+                    cloud_db.collection("Utenti").document(email).collection("Contatti").document(cont_name).set(contatto);
+                //} catch(IllegalArgumentException e ) {}
 
-                Toast.makeText(getApplicationContext(), "CONTATTO INSERITO", Toast.LENGTH_SHORT).show();
+                try {
+                    Toast.makeText(getApplicationContext(), "CONTATTO INSERITO", Toast.LENGTH_SHORT).show();
+                } catch( NullPointerException e ) {}
 
                 return true;
 
@@ -188,4 +193,5 @@ public class InserimentoNumero extends AppCompatActivity {
         return false ;
     }
 
+    public FirebaseFirestore getinst() { return FirebaseFirestore.getInstance() ; }
 }
