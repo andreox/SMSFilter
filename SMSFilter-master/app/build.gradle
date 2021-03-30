@@ -68,6 +68,7 @@ dependencies {
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'org.mockito:mockito-android:2.+'
     androidTestImplementation 'junit:junit:4.+'
+    testImplementation 'org.mockito:mockito-android:2.+'
 
     // Import the BoM for the Firebase platform
     implementation platform('com.google.firebase:firebase-bom:26.7.0')
@@ -102,7 +103,29 @@ dependencies {
     // classpath.
     androidTestImplementation 'androidx.test.espresso:espresso-idling-resource:3.1.0'
 
+    testImplementation 'androidx.test.espresso:espresso-core:3.1.0'
+    testImplementation 'androidx.test.espresso:espresso-contrib:3.1.0'
+    testImplementation 'androidx.test.espresso:espresso-intents:3.1.0'
+    testImplementation 'androidx.test.espresso:espresso-accessibility:3.1.0'
+    testImplementation 'androidx.test.espresso:espresso-web:3.1.0'
+    testImplementation 'androidx.test.espresso.idling:idling-concurrent:3.1.0'
+    testImplementation 'androidx.test.ext:junit:1.1.2'
+    // The following Espresso dependency can be either "implementation"
+    // or "androidTestImplementation", depending on whether you want the
+    // dependency to appear on your APK's compile classpath or the test APK
+    // classpath.
+    testImplementation 'androidx.test.espresso:espresso-idling-resource:3.1.0'
 
+    testImplementation 'androidx.test:core:1.0.0'
+
+
+    // AndroidJUnitRunner and JUnit Rules
+    testImplementation 'androidx.test:runner:1.1.0'
+    testImplementation 'androidx.test:rules:1.1.0'
+
+    // Assertions
+    testImplementation 'androidx.test.ext:truth:1.0.0'
+    testImplementation 'com.google.truth:truth:0.42'
 
 
 }

@@ -73,7 +73,8 @@ public class CancellazioneNumero extends AppCompatActivity {
 
         else {
 
-             loadContacts();
+             setLists(loadContacts());
+
         }
 
         db = new DBHelper(this ) ;
@@ -129,12 +130,14 @@ public class CancellazioneNumero extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        loadContacts();
+        setLists(loadContacts());
     }
 
-    private void loadContacts() {
+    public NNClass loadContacts() {
 
-        ContentResolver contentResolver= getCR();
+        ArrayList<String> nomi  = new ArrayList<String>();
+        ArrayList<String> numeri = new ArrayList<String>() ;
+        ContentResolver contentResolver= getContentResolver();
         Cursor cursor=contentResolver.query(ContactsContract.Contacts.CONTENT_URI,null,null,null,null);
 
         if (cursor.moveToFirst()){
@@ -163,13 +166,31 @@ public class CancellazioneNumero extends AppCompatActivity {
             } while( cursor.moveToNext()) ;
         }
         cursor.close() ;
-        dataAdapter.notifyDataSetChanged();
+        NNClass nomi_numeri = new NNClass(numeri,nomi) ;
+        System.out.println(nomi_numeri.getNomi() + " " + nomi_numeri.getNumeri()) ;
+        return nomi_numeri ;
+
+    }
+
+    public void setLists( NNClass numeri_nomi ) {
+
+        if ( nomi != null ) nomi.clear() ;
+        if ( numeri != null ) numeri.clear() ;
+        for ( String s : numeri_nomi.getNomi() ) {
+            System.out.println(s+"1") ;
+            nomi.add(s) ;
+        }
+
+        for ( String s : numeri_nomi.getNumeri()) {
+            System.out.println(s+"123") ;
+            numeri.add(s) ;
+        }
+        dataAdapter.notifyDataSetChanged(); //to comment when testing
 
     }
 
     public DBHelper makeDBHelper(Context context) { return new DBHelper(context) ;}
 
-    public ContentResolver getCR() { return getContentResolver() ; }
 
     public ArrayList<String> getNomi() { return nomi ; }
     public ArrayList<String> getNumeri() { return numeri ; }

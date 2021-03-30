@@ -1,12 +1,8 @@
-package com.example.smsfilter;
-
+package com.example.smsfilter ;
 import android.database.Cursor;
 import android.test.mock.MockContentResolver;
 
-import androidx.test.ext.junit.rules.ActivityScenarioRule;
-
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -19,7 +15,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
 
 @RunWith(MockitoJUnitRunner.class)
-public class TestCancMockRubrica  {
+public class UnitTest_CancellazioneNumero {
 
     @Mock
     public MockContentResolver mcr ;
@@ -29,9 +25,9 @@ public class TestCancMockRubrica  {
     @Mock
     Cursor c ;
 
-    @Rule
+    /*@Rule
     public ActivityScenarioRule<CancellazioneNumero> activityRule
-            = new ActivityScenarioRule<>(CancellazioneNumero.class);
+            = new ActivityScenarioRule<>(CancellazioneNumero.class);b*/
 
     @Before
     public void insertContactList() {
