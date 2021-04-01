@@ -1,8 +1,8 @@
 package com.example.smsfilter;
 
-import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
+import androidx.test.rule.ActivityTestRule;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -23,7 +23,7 @@ import static org.hamcrest.Matchers.is;
 public class UITest_CancellazioneNumero {
 
     @Rule
-    public ActivityScenarioRule<CancellazioneNumero> activityRule = new ActivityScenarioRule<>(CancellazioneNumero.class) ;
+    public ActivityTestRule<CancellazioneNumero> activityRule = new ActivityTestRule<>(CancellazioneNumero.class) ;
 
     @Test
     public void testEditTextDeleteContact() {

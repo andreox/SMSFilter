@@ -86,7 +86,9 @@ public class CancellazioneNumero extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                System.out.println(nomi) ;
                 String sel_name = (String) spinner2.getSelectedItem();
+                System.out.println(sel_name) ;
                 int index = nomi.indexOf(sel_name) ;
                 String ph_number = numeri.get(index) ;
                 numero.setText(ph_number);

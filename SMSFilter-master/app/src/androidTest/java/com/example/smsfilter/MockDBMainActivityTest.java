@@ -2,7 +2,7 @@ package com.example.smsfilter ;
 
 import android.content.Context;
 
-import androidx.test.ext.junit.rules.ActivityScenarioRule;
+import androidx.test.rule.ActivityTestRule;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -19,14 +19,14 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class MockDBTest {
+public class MockDBMainActivityTest {
 
     @Mock
     private DBHelper db ;
 
    @Rule
-    public ActivityScenarioRule<MainActivity> activityRule
-            = new ActivityScenarioRule<>(MainActivity.class);
+    public ActivityTestRule<MainActivity> activityRule
+            = new ActivityTestRule<>(MainActivity.class);
 
 
     @Test

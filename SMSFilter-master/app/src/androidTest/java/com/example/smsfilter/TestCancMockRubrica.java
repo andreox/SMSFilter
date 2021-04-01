@@ -1,9 +1,8 @@
 package com.example.smsfilter;
 
-import android.database.Cursor;
 import android.test.mock.MockContentResolver;
 
-import androidx.test.ext.junit.rules.ActivityScenarioRule;
+import androidx.test.rule.ActivityTestRule;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -26,12 +25,10 @@ public class TestCancMockRubrica  {
 
     private CancellazioneNumero cn ;
 
-    @Mock
-    Cursor c ;
 
     @Rule
-    public ActivityScenarioRule<CancellazioneNumero> activityRule
-            = new ActivityScenarioRule<>(CancellazioneNumero.class);
+    public ActivityTestRule<CancellazioneNumero> activityRule
+            = new ActivityTestRule<>(CancellazioneNumero.class);
 
     @Before
     public void insertContactList() {
@@ -51,12 +48,13 @@ public class TestCancMockRubrica  {
         list2.add("04") ;
 
         NNClass nn = new NNClass( list2, list1) ;
-        doReturn(nn).when(cn).loadContacts() ;
+        doReturn(nn).when(cn).loadContacts() ; //Mock Rubrica
 
         cn.setLists(cn.loadContacts()) ;
 
         assertEquals(list1,cn.getNomi()) ;
         assertEquals(list2,cn.getNumeri()) ;
+
 
     }
 }

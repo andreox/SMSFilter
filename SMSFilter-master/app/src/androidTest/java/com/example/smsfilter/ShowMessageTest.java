@@ -1,9 +1,9 @@
 package com.example.smsfilter;
 
 import androidx.test.espresso.intent.Intents;
-import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
+import androidx.test.rule.ActivityTestRule;
 
 import org.junit.After;
 import org.junit.Before;
@@ -29,8 +29,8 @@ public class ShowMessageTest {
 
     private final String ID = "Mess_ID" ;
     @Rule
-    public ActivityScenarioRule<MainActivity> activityRule
-            = new ActivityScenarioRule<>(MainActivity.class);
+    public ActivityTestRule<MainActivity> activityRule
+            = new ActivityTestRule<>(MainActivity.class);
 
 
     @Before
@@ -45,12 +45,9 @@ public class ShowMessageTest {
 
     @Test
     public void verifyIdDisplayMessage() {
-        //onView(withId(R.id.listView1)).perform(click()) ;
 
         int position = 1 ;
         MainActivity ma = MainActivity.getInstance() ;
-        ma.msgs_list.add("Messaggio") ;
-        ma.adapt.notifyDataSetChanged();
         onData(anything()).inAdapterView(withId(R.id.listView1)).atPosition(position).perform(click());
 
         intended(allOf(

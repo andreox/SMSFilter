@@ -1,7 +1,7 @@
 package com.example.smsfilter;
 
-import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.filters.LargeTest;
+import androidx.test.rule.ActivityTestRule;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -23,12 +23,10 @@ public class testUILogin {
     private String pwd = "utente1" ;
 
     @Rule
-    public ActivityScenarioRule<LoginActivity> act = new ActivityScenarioRule<>(LoginActivity.class) ;
+    public ActivityTestRule<LoginActivity> act = new ActivityTestRule<>(LoginActivity.class) ;
 
     @Mock
     DBHelper db ;
-
-
 
     @Test
     public void verifyEmail() {

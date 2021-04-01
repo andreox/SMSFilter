@@ -2,7 +2,7 @@ package com.example.smsfilter;
 
 import android.content.Context;
 
-import androidx.test.ext.junit.rules.ActivityScenarioRule;
+import androidx.test.rule.ActivityTestRule;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -23,8 +23,8 @@ public class InserimentoContattoDBTest {
     private DBHelper db ;
 
     @Rule
-    public ActivityScenarioRule<InserimentoNumero> activityRule
-            = new ActivityScenarioRule<>(InserimentoNumero.class);
+    public ActivityTestRule<InserimentoNumero> activityRule
+            = new ActivityTestRule<>(InserimentoNumero.class);
 
     @Test
     public void testInsertContact() {

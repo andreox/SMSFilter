@@ -179,7 +179,7 @@ public class InserimentoNumero extends AppCompatActivity {
                 contatto.put("Numero", ph_number);
 
                 //try
-                    cloud_db.collection("Utenti").document(email).collection("Contatti").document(cont_name).set(contatto);
+                    //cloud_db.collection("Utenti").document(email).collection("Contatti").document(cont_name).set(contatto);
                 //} catch(IllegalArgumentException e ) {}
 
                 try {

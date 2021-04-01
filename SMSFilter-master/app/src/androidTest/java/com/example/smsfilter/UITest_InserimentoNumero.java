@@ -1,8 +1,8 @@
 package com.example.smsfilter;
 
-import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
+import androidx.test.rule.ActivityTestRule;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -25,11 +25,12 @@ public class UITest_InserimentoNumero {
         private String contact ;
 
         @Rule
-        public ActivityScenarioRule<InserimentoNumero> activityRule
-                = new ActivityScenarioRule<>(InserimentoNumero.class);
+        public ActivityTestRule<InserimentoNumero> activityRule
+                = new ActivityTestRule<>(InserimentoNumero.class);
 
 
         public void setString() { contact = "Alessio" ; }
+
         @Test
         public void testInserimentoNumero() {
             // Type text and then press the button.
