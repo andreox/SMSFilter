@@ -1,8 +1,12 @@
 package com.example.smsfilter;
 
+import android.os.Looper;
+
+import androidx.test.espresso.Espresso;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,6 +32,12 @@ public class testUILogin {
     @Mock
     DBHelper db ;
 
+    @Before
+    public void setup() {
+
+        Looper.prepare() ;
+    }
+
     @Test
     public void verifyEmail() {
 
@@ -37,6 +47,7 @@ public class testUILogin {
 
         onView(withId(R.id.editTextTextEmailAddress)).perform(typeText(email)) ;
         onView(withId(R.id.editTextTextPassword)).perform(typeText(pwd)) ;
+        Espresso.closeSoftKeyboard() ;
         onView(withId(R.id.button3)).perform(click()) ;
 
         assertEquals(email, la.getStr_email());
@@ -50,6 +61,7 @@ public class testUILogin {
 
         onView(withId(R.id.editTextTextEmailAddress)).perform(typeText(email)) ;
         onView(withId(R.id.editTextTextPassword)).perform(typeText(pwd)) ;
+        Espresso.closeSoftKeyboard() ;
         onView(withId(R.id.button3)).perform(click()) ;
 
         assertEquals(pwd, la.getStr_pswd());

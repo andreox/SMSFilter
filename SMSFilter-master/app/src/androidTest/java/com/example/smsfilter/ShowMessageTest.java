@@ -1,5 +1,7 @@
 package com.example.smsfilter;
 
+import android.database.Cursor;
+
 import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
@@ -10,6 +12,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 
 import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -32,6 +35,8 @@ public class ShowMessageTest {
     public ActivityTestRule<MainActivity> activityRule
             = new ActivityTestRule<>(MainActivity.class);
 
+    @Mock
+    Cursor c ;
 
     @Before
     public void setUp() {
@@ -46,7 +51,7 @@ public class ShowMessageTest {
     @Test
     public void verifyIdDisplayMessage() {
 
-        int position = 1 ;
+        int position = 0 ;
         MainActivity ma = MainActivity.getInstance() ;
         onData(anything()).inAdapterView(withId(R.id.listView1)).atPosition(position).perform(click());
 

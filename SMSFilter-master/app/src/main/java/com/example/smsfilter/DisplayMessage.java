@@ -1,6 +1,7 @@
 package com.example.smsfilter;
 
 import android.database.Cursor;
+import android.database.CursorIndexOutOfBoundsException;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -31,10 +32,12 @@ public class DisplayMessage extends AppCompatActivity {
                 id_To_Update = Value;
                 String telefono = "" ;
                 String corpo = "";
-                if ( rs != null ) {
+                if ( rs != null && rs.getColumnCount() != 0 ) {
                     rs.moveToFirst();
-                    telefono = rs.getString(rs.getColumnIndex("Telefono"));
-                    corpo = rs.getString(rs.getColumnIndex("Body"));
+                    try {
+                        telefono = rs.getString(rs.getColumnIndex("Telefono"));
+                        corpo = rs.getString(rs.getColumnIndex("Body"));
+                    } catch( CursorIndexOutOfBoundsException e ) { e.printStackTrace(); }
                 }
 
                 if (!rs.isClosed())  {

@@ -74,6 +74,7 @@ public class CancellazioneNumero extends AppCompatActivity {
         else {
 
              setLists(loadContacts());
+            dataAdapter.notifyDataSetChanged(); //to comment when testing
 
         }
 
@@ -90,7 +91,10 @@ public class CancellazioneNumero extends AppCompatActivity {
                 String sel_name = (String) spinner2.getSelectedItem();
                 System.out.println(sel_name) ;
                 int index = nomi.indexOf(sel_name) ;
-                String ph_number = numeri.get(index) ;
+                String ph_number = null ;
+                try {
+                    ph_number = numeri.get(index);
+                } catch ( ArrayIndexOutOfBoundsException e ) { System.out.println("AIOOBE Error") ;}
                 numero.setText(ph_number);
 
                 if ( ph_number != null ) {
@@ -133,6 +137,8 @@ public class CancellazioneNumero extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         setLists(loadContacts());
+        dataAdapter.notifyDataSetChanged(); //to comment when testing
+
     }
 
     public NNClass loadContacts() {
@@ -187,7 +193,7 @@ public class CancellazioneNumero extends AppCompatActivity {
             System.out.println(s+"123") ;
             numeri.add(s) ;
         }
-        dataAdapter.notifyDataSetChanged(); //to comment when testing
+       // dataAdapter.notifyDataSetChanged(); //to comment when testing
 
     }
 

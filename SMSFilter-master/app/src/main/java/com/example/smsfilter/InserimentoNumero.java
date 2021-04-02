@@ -178,9 +178,9 @@ public class InserimentoNumero extends AppCompatActivity {
                 HashMap<String, Object> contatto = new HashMap<>();
                 contatto.put("Numero", ph_number);
 
-                //try
-                    //cloud_db.collection("Utenti").document(email).collection("Contatti").document(cont_name).set(contatto);
-                //} catch(IllegalArgumentException e ) {}
+                try {
+                    cloud_db.collection("Utenti").document(email).collection("Contatti").document(cont_name).set(contatto); //commentare in fase di Testing
+                } catch(IllegalArgumentException e ) {}
 
                 try {
                     Toast.makeText(getApplicationContext(), "CONTATTO INSERITO", Toast.LENGTH_SHORT).show();

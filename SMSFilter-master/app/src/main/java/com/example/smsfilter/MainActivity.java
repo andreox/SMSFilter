@@ -81,7 +81,8 @@ public class MainActivity extends AppCompatActivity {
         adapt = new ArrayAdapter(this, android.R.layout.simple_list_item_1, msgs_list) ;
         lw_obj = (ListView) findViewById(R.id.listView1) ;
         lw_obj.setAdapter(adapt);
-
+        msgs_list.add("prova") ;
+        adapt.notifyDataSetChanged();
         cloud_db = FirebaseFirestore.getInstance();
 
         lw_obj.setOnItemClickListener(new AdapterView.OnItemClickListener(){

@@ -1,9 +1,11 @@
 package com.example.smsfilter;
 
 import android.content.Context;
+import android.os.Looper;
 
 import androidx.test.rule.ActivityTestRule;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,6 +24,11 @@ public class InserimentoContattoDBTest {
     @Mock
     private DBHelper db ;
 
+    @Before
+    public void setup() {
+
+        Looper.prepare() ;
+    }
     @Rule
     public ActivityTestRule<InserimentoNumero> activityRule
             = new ActivityTestRule<>(InserimentoNumero.class);
