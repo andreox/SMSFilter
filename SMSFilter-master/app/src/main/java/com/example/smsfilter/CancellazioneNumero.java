@@ -74,6 +74,7 @@ public class CancellazioneNumero extends AppCompatActivity {
         else {
 
              setLists(loadContacts());
+             System.out.println("I'm here") ;
             dataAdapter.notifyDataSetChanged(); //to comment when testing
 
         }
@@ -137,7 +138,8 @@ public class CancellazioneNumero extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         setLists(loadContacts());
-        dataAdapter.notifyDataSetChanged(); //to comment when testing
+        System.out.println("I'm here2") ;
+        dataAdapter.notifyDataSetChanged();
 
     }
 
@@ -193,7 +195,6 @@ public class CancellazioneNumero extends AppCompatActivity {
             System.out.println(s+"123") ;
             numeri.add(s) ;
         }
-       // dataAdapter.notifyDataSetChanged(); //to comment when testing
 
     }
 

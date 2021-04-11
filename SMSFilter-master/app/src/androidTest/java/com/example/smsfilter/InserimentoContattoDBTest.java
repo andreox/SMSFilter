@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Looper;
 
 import androidx.test.rule.ActivityTestRule;
+import androidx.test.rule.GrantPermissionRule;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -23,6 +24,8 @@ public class InserimentoContattoDBTest {
 
     @Mock
     private DBHelper db ;
+
+    @Rule public GrantPermissionRule permissionRule = GrantPermissionRule.grant(android.Manifest.permission.READ_CONTACTS);
 
     @Before
     public void setup() {

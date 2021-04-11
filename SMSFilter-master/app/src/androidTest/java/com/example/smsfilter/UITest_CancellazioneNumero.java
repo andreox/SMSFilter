@@ -3,6 +3,7 @@ package com.example.smsfilter;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
+import androidx.test.rule.GrantPermissionRule;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -21,6 +22,8 @@ import static org.hamcrest.Matchers.is;
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class UITest_CancellazioneNumero {
+
+    @Rule public GrantPermissionRule permissionRule = GrantPermissionRule.grant(android.Manifest.permission.READ_CONTACTS);
 
     @Rule
     public ActivityTestRule<CancellazioneNumero> activityRule = new ActivityTestRule<>(CancellazioneNumero.class) ;

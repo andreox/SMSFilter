@@ -34,7 +34,7 @@ public class InserimentoNumero extends AppCompatActivity {
     private FirebaseFirestore cloud_db ;
     private ArrayList<String> nomi ;
     private ArrayList<String> numeri ;
-    private ArrayAdapter<String> dataAdapter ;
+    public ArrayAdapter<String> dataAdapter ;
 
 
     public static InserimentoNumero getInstance() { return instance ; }

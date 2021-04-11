@@ -3,6 +3,7 @@ package com.example.smsfilter;
 import android.test.mock.MockContentResolver;
 
 import androidx.test.rule.ActivityTestRule;
+import androidx.test.rule.GrantPermissionRule;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -25,6 +26,8 @@ public class TestCancMockRubrica  {
 
     private CancellazioneNumero cn ;
 
+
+    @Rule public GrantPermissionRule permissionRule = GrantPermissionRule.grant(android.Manifest.permission.READ_CONTACTS);
 
     @Rule
     public ActivityTestRule<CancellazioneNumero> activityRule
@@ -54,6 +57,18 @@ public class TestCancMockRubrica  {
 
         assertEquals(list1,cn.getNomi()) ;
         assertEquals(list2,cn.getNumeri()) ;
+
+        String contact = "Pino" ;
+        String number = "04" ;
+
+        /*(withId(R.id.spinner2)).perform(click()) ;
+
+        onData(allOf(is(instanceOf(String.class)), is(contact))).perform(click());
+
+        onView(withId(R.id.button2)).perform(click()) ;
+
+        onView(withId(R.id.editTextTextPersonName2)).check(matches(withText(number))) ;*/
+
 
 
     }

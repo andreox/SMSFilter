@@ -21,7 +21,7 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(MockitoJUnitRunner.class)
 @LargeTest
-public class testUILogin {
+public class TestUILogin {
 
     private String email = "utente1@prova.com" ;
     private String pwd = "utente1" ;
