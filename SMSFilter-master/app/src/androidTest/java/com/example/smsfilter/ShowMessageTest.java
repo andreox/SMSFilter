@@ -6,6 +6,7 @@ import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
+import androidx.test.rule.GrantPermissionRule;
 
 import org.junit.After;
 import org.junit.Before;
@@ -30,6 +31,7 @@ import static org.hamcrest.Matchers.anything;
 @LargeTest
 public class ShowMessageTest {
 
+    @Rule public GrantPermissionRule gr = GrantPermissionRule.grant(android.Manifest.permission.RECEIVE_SMS) ;
     private final String ID = "Mess_ID" ;
     @Rule
     public ActivityTestRule<MainActivity> activityRule

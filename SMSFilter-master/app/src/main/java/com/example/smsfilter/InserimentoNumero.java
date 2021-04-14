@@ -91,11 +91,17 @@ public class InserimentoNumero extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                System.out.println(nomi) ;
+                System.out.println(numeri) ;
                 //String ph_number = numero.getText().toString() ;
                 //String cont_name = nome.getText().toString();
-                String cont_name = (String) contact_list.getSelectedItem();
+
+                String cont_name =  contact_list.getSelectedItem().toString();
+                System.out.println(cont_name) ;
                 int index = nomi.indexOf(cont_name) ;
+                System.out.println(index) ;
                 String ph_number = numeri.get(index) ;
+
 
                 try {
 
@@ -193,5 +199,16 @@ public class InserimentoNumero extends AppCompatActivity {
         return false ;
     }
 
+    public void insertContactToList(String contact, String numero ) {
+        nomi.add(contact) ;
+        numeri.add(numero) ;
+        System.out.println("0"+nomi) ;
+        System.out.println("1"+numeri) ;
+    }
+
+    public void removeContactFromList(String contact, String numero ) {
+        nomi.remove(contact) ;
+        numeri.remove(contact) ;
+    }
     public FirebaseFirestore getinst() { return FirebaseFirestore.getInstance() ; }
 }

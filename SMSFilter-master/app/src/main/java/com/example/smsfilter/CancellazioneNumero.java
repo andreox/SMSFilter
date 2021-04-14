@@ -198,6 +198,16 @@ public class CancellazioneNumero extends AppCompatActivity {
 
     }
 
+    public void insertContactToList(String contact, String numero ) {
+        nomi.add(contact) ;
+        numeri.add(numero) ;
+    }
+
+    public void removeContactFromList(String contact, String numero ) {
+        nomi.remove(contact) ;
+        numeri.remove(contact) ;
+    }
+
     public DBHelper makeDBHelper(Context context) { return new DBHelper(context) ;}
 
 

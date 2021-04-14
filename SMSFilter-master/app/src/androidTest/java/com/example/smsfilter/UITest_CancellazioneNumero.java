@@ -5,6 +5,8 @@ import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.rule.GrantPermissionRule;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,15 +26,28 @@ import static org.hamcrest.Matchers.is;
 public class UITest_CancellazioneNumero {
 
     @Rule public GrantPermissionRule permissionRule = GrantPermissionRule.grant(android.Manifest.permission.READ_CONTACTS);
+    private CancellazioneNumero cn ;
 
     @Rule
     public ActivityTestRule<CancellazioneNumero> activityRule = new ActivityTestRule<>(CancellazioneNumero.class) ;
 
+    @Before
+    public void before_test() {
+        cn = CancellazioneNumero.getInstance() ;
+        cn.insertContactToList("Antonio","02");
+    }
+
+    @After
+    public void after_test() {
+
+        cn.removeContactFromList("Antonio","02");
+    }
+
     @Test
     public void testEditTextDeleteContact() {
 
-        String contact = "Vincenzo" ;
-        String number = "02" ;
+        String contact = "Antonio" ;
+        String number = "03" ;
 
         onView(withId(R.id.spinner2)).perform(click()) ;
 
