@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         if ( bundle_email != null )
             email = bundle_email.getString("user_email") ;
 
+        mydb = makeDBHelper(this) ;
         BottomNavigationView navView = findViewById(R.id.nav_view);
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications)
@@ -75,13 +76,11 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navView, navController);
 
         //mydb = new DBHelper(this) ;
-        mydb = makeDBHelper(this) ;
-        if ( mydb.getAllMessages() != null )
-            msgs_list = mydb.getAllMessages() ;
+        if ( getMsgs_list() != null )
+            msgs_list = getMsgs_list() ;
         adapt = new ArrayAdapter(this, android.R.layout.simple_list_item_1, msgs_list) ;
         lw_obj = (ListView) findViewById(R.id.listView1) ;
         lw_obj.setAdapter(adapt);
-        msgs_list.add("prova") ;
         adapt.notifyDataSetChanged();
         cloud_db = FirebaseFirestore.getInstance();
 
@@ -171,6 +170,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void add_message_to_list() {
+
+        msgs_list.add("prova") ;
+
+    }
     public ArrayList<String> getMsgs_list() {
          //Stesso metodo utilizzato per aggiornare lista messaggi, metodo get inserito solo a scopo di testing
         DBHelper db = makeDBHelper(this) ;
@@ -180,4 +184,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public DBHelper getdb() { return mydb ; }
+
+
 }

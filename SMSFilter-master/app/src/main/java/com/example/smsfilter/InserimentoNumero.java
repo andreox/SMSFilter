@@ -32,8 +32,8 @@ public class InserimentoNumero extends AppCompatActivity {
     private Spinner contact_list ;
     private String email = "" ;
     private FirebaseFirestore cloud_db ;
-    private ArrayList<String> nomi ;
-    private ArrayList<String> numeri ;
+    public ArrayList<String> nomi ;
+    public ArrayList<String> numeri ;
     public ArrayAdapter<String> dataAdapter ;
 
 
@@ -80,6 +80,7 @@ public class InserimentoNumero extends AppCompatActivity {
         else {
 
             loadContacts();
+
         }
 
         EditText numero = (EditText) findViewById(R.id.editTextPhone) ;
@@ -90,11 +91,6 @@ public class InserimentoNumero extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                System.out.println(nomi) ;
-                System.out.println(numeri) ;
-                //String ph_number = numero.getText().toString() ;
-                //String cont_name = nome.getText().toString();
 
                 String cont_name =  contact_list.getSelectedItem().toString();
                 System.out.println(cont_name) ;
@@ -133,6 +129,7 @@ public class InserimentoNumero extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         loadContacts();
+
     }
 
     private void loadContacts() {
@@ -145,8 +142,11 @@ public class InserimentoNumero extends AppCompatActivity {
 
                 String id = cursor.getString( cursor.getColumnIndex(ContactsContract.Contacts._ID)) ;
                 String name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)) ;
-                System.out.println(name) ;
-                nomi.add(name);
+                String name_to_add = "" ;
+                String number_to_add = "" ;
+
+                name_to_add = name ;
+                //nomi.add(name) ;
                 int hasPhoneNumber = Integer.parseInt(cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) ;
 
                 if ( hasPhoneNumber > 0 ) {
@@ -158,8 +158,10 @@ public class InserimentoNumero extends AppCompatActivity {
 
                     while ( cursor2.moveToNext()) {
                         String phoneNumber = cursor2.getString(cursor2.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)) ;
-                        numeri.add(phoneNumber) ;
+                        //numeri.add(phoneNumber) ;
+                        number_to_add = phoneNumber ;
                     }
+                    insertContactToList(name_to_add,number_to_add);
                     cursor2.close() ;
                 }
 
@@ -186,7 +188,8 @@ public class InserimentoNumero extends AppCompatActivity {
 
                 try {
                     cloud_db.collection("Utenti").document(email).collection("Contatti").document(cont_name).set(contatto); //commentare in fase di Testing
-                } catch(IllegalArgumentException e ) {}
+                } catch(IllegalArgumentException e ) {                     Toast.makeText(getApplicationContext(), "CANNOT INSERT CONTACT IN CLOUD", Toast.LENGTH_SHORT).show();
+                }
 
                 try {
                     Toast.makeText(getApplicationContext(), "CONTATTO INSERITO", Toast.LENGTH_SHORT).show();
@@ -202,8 +205,7 @@ public class InserimentoNumero extends AppCompatActivity {
     public void insertContactToList(String contact, String numero ) {
         nomi.add(contact) ;
         numeri.add(numero) ;
-        System.out.println("0"+nomi) ;
-        System.out.println("1"+numeri) ;
+
     }
 
     public void removeContactFromList(String contact, String numero ) {

@@ -32,8 +32,8 @@ public class CancellazioneNumero extends AppCompatActivity {
     private FirebaseFirestore cloud_db ;
     private Spinner spinner2 ;
     private String email ;
-    private ArrayList<String> nomi ;
-    private ArrayList<String> numeri ;
+    public ArrayList<String> nomi ;
+    public ArrayList<String> numeri ;
     private ArrayAdapter<String> dataAdapter ;
 
     public static CancellazioneNumero getInstance() {
@@ -74,7 +74,7 @@ public class CancellazioneNumero extends AppCompatActivity {
         else {
 
              setLists(loadContacts());
-             System.out.println("I'm here") ;
+
             dataAdapter.notifyDataSetChanged(); //to comment when testing
 
         }
@@ -187,12 +187,12 @@ public class CancellazioneNumero extends AppCompatActivity {
         if ( nomi != null ) nomi.clear() ;
         if ( numeri != null ) numeri.clear() ;
         for ( String s : numeri_nomi.getNomi() ) {
-            System.out.println(s+"1") ;
+
             nomi.add(s) ;
         }
 
         for ( String s : numeri_nomi.getNumeri()) {
-            System.out.println(s+"123") ;
+
             numeri.add(s) ;
         }
 

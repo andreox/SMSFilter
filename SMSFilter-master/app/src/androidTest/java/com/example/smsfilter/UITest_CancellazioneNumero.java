@@ -15,11 +15,15 @@ import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.RootMatchers.withDecorView;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.startsWith;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
@@ -34,20 +38,22 @@ public class UITest_CancellazioneNumero {
     @Before
     public void before_test() {
         cn = CancellazioneNumero.getInstance() ;
-        cn.insertContactToList("Antonio","02");
+        cn.nomi.add("Antonio") ;
+        cn.numeri.add("02") ;
     }
 
     @After
     public void after_test() {
 
-        cn.removeContactFromList("Antonio","02");
+        cn.nomi.remove("Antonio") ;
+        cn.numeri.remove("02") ;
     }
 
     @Test
     public void testEditTextDeleteContact() {
 
         String contact = "Antonio" ;
-        String number = "03" ;
+        String number = "02" ;
 
         onView(withId(R.id.spinner2)).perform(click()) ;
 
@@ -56,6 +62,26 @@ public class UITest_CancellazioneNumero {
         onView(withId(R.id.button2)).perform(click()) ;
 
         onView(withId(R.id.editTextTextPersonName2)).check(matches(withText(number))) ;
+
+    }
+
+    @Test
+    public void checkToast() {
+
+        String contact = "Antonio" ;
+        String number = "02" ;
+
+        onView(withId(R.id.spinner2)).perform(click()) ;
+
+        onData(allOf(is(instanceOf(String.class)), is(contact))).perform(click());
+
+        onView(withId(R.id.button2)).perform(click()) ;
+
+        onView(withText(startsWith("CONTATTO INESISTENTE"))).
+                inRoot(withDecorView(
+                        not(is(activityRule.getActivity().
+                                getWindow().getDecorView())))).
+                check(matches(isDisplayed()));
 
     }
 

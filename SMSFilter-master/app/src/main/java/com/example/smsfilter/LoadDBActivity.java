@@ -1,12 +1,12 @@
 package com.example.smsfilter;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -21,13 +21,6 @@ public class LoadDBActivity extends AppCompatActivity {
     private String email ;
     private boolean tr = false ;
 
-    /*@Override
-    public void onStart() {
-        super.onStart() ;
-        try {
-            Thread.sleep(10000);
-        } catch( Exception e ) {}
-    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
