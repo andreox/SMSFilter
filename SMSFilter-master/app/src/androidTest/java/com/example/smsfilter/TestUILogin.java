@@ -46,6 +46,7 @@ public class TestUILogin {
         when(db.checkIfEmpty()).thenReturn(true) ;*/
 
         onView(withId(R.id.editTextTextEmailAddress)).perform(typeText(email)) ;
+        Espresso.closeSoftKeyboard() ;
         onView(withId(R.id.editTextTextPassword)).perform(typeText(pwd)) ;
         Espresso.closeSoftKeyboard() ;
         onView(withId(R.id.button3)).perform(click()) ;
@@ -60,6 +61,7 @@ public class TestUILogin {
         LoginActivity la = LoginActivity.getInstance() ;
 
         onView(withId(R.id.editTextTextEmailAddress)).perform(typeText(email)) ;
+        Espresso.closeSoftKeyboard() ;
         onView(withId(R.id.editTextTextPassword)).perform(typeText(pwd)) ;
         Espresso.closeSoftKeyboard() ;
         onView(withId(R.id.button3)).perform(click()) ;

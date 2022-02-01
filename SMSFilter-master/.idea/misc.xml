@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/065875758/Desktop/SMSFilter/SMSFilter/SMSFilter-master/app/src/main/res/layout/activity_cancellazione_numero.xml" value="0.36" />
+        <entry key="..\:/Users/065875758/Desktop/SMSFilter/SMSFilter/SMSFilter-master/app/src/main/res/layout/activity_display_message.xml" value="0.268" />
+        <entry key="..\:/Users/065875758/Desktop/SMSFilter/SMSFilter/SMSFilter-master/app/src/main/res/layout/activity_inserimento_numero.xml" value="0.44000000000000006" />
+        <entry key="..\:/Users/065875758/Desktop/SMSFilter/SMSFilter/SMSFilter-master/app/src/main/res/layout/activity_register.xml" value="0.132" />
+      </map>
+    </option>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>

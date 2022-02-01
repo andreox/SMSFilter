@@ -71,7 +71,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
     public Cursor getData(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "select * from Messaggi where Mess_ID="+id+"", null );
+        Cursor res =  db.rawQuery( "select M.Telefono AS Telefono, M.Body AS Body, P.Nome AS Nome from Messaggi M, Persone P where M.Mess_ID="+id+" AND P.Telefono = M.Telefono", null );
         return res;
     }
     public ArrayList<String> getAllContacts() {

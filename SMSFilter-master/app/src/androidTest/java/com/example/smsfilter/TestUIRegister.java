@@ -33,7 +33,9 @@ public class TestUIRegister {
         User u = new User(nome,email,pwd) ;
 
         onView(withId(R.id.editTextTextPersonName3)).perform(typeText(nome)) ;
+        Espresso.closeSoftKeyboard() ;
         onView(withId(R.id.editTextTextEmailAddress2)).perform(typeText(email)) ;
+        Espresso.closeSoftKeyboard() ;
         onView(withId(R.id.editTextTextPassword2)).perform(typeText(pwd));
         Espresso.closeSoftKeyboard() ;
         onView(withId(R.id.button5)).perform(click()) ;
